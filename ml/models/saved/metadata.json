@@ -1,0 +1,18 @@
+{
+  "version": "v2_transaction_model",
+  "date": "2026-04-10T23:22:26.607493",
+  "roc_auc": 0.9483585164835165,
+  "accuracy": 0.86925,
+  "features_count": 9,
+  "features": [
+    "spending_ratio",
+    "low_balance_days",
+    "income_stability",
+    "expense_volatility",
+    "min_balance",
+    "transaction_frequency",
+    "discretionary_spending_ratio",
+    "avg_monthly_income",
+    "avg_balance"
+  ]
+}

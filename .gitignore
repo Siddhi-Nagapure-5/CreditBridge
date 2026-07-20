@@ -1,0 +1,21 @@
+# IntelliJ
+.idea/
+*.iml
+*.iws
+
+# Maven
+backend/target/
+target/
+
+# Node
+frontend/node_modules/
+node_modules/
+.env
+
+# Python
+ml/__pycache__/
+__pycache__/
+*.pyc
+
+# OS
+.DS_Store

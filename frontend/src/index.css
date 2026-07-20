@@ -1,0 +1,88 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@theme {
+  /* Ergonomic Premium Dark Palette */
+  --color-pure-black: #09090b; /* Shifted from #000000 to Deep Zinc for less eye-strain */
+  --color-pure-white: #FAFAFA; /* Softened from #FFFFFF */
+  
+  /* Primary Grid/Border Colors - Slightly more visible for structure */
+  --color-grid-line: rgba(255, 255, 255, 0.1);
+  --color-grid-line-hover: rgba(255, 255, 255, 0.2);
+  
+  /* Accents */
+  --color-electric: #FFFFFF;
+  --color-neutral: #71717A; /* Zinc-500, higher contrast than raw neutral */
+  --color-warm: #A1A1AA; /* Zinc-400 */
+  
+  --font-sans: "Inter", ui-sans-serif, system-ui;
+  --font-mono: "JetBrains Mono", monospace;
+
+  --animate-shimmer: shimmer 2s linear infinite;
+  @keyframes shimmer {
+    from { background-position: 0 0; }
+    to { background-position: -200% 0; }
+  }
+}
+
+@layer base {
+  body {
+    @apply bg-pure-black text-white font-sans m-0 antialiased selection:bg-white selection:text-black;
+    scroll-behavior: auto;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-sans font-medium text-white tracking-[-0.03em] leading-tight;
+  }
+}
+
+@layer components {
+  /* Structural Wireframe Grid */
+  .wireframe-grid {
+    @apply border border-grid-line relative;
+  }
+
+  .grid-divider-v {
+    @apply absolute inset-y-0 w-px bg-grid-line;
+  }
+
+  .grid-divider-h {
+    @apply absolute inset-x-0 h-px bg-grid-line;
+  }
+
+  /* Sharp Component Architecture */
+  .card-premium {
+    @apply border border-grid-line transition-all duration-300 hover:border-grid-line-hover bg-[#121214] shadow-lg;
+  }
+
+  .mono-label {
+    @apply font-mono text-[10px] uppercase tracking-[0.2em] text-neutral;
+  }
+
+  /* Interactive States */
+  .btn-primary {
+    @apply px-6 py-2.5 bg-white text-black font-medium text-sm transition-all hover:bg-neutral-200;
+  }
+
+  .btn-outline {
+    @apply px-6 py-2.5 border border-grid-line text-white font-medium text-sm transition-all hover:bg-white/5;
+  }
+}
+
+/* Lenis smooth scroll configuration */
+html.lenis {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
