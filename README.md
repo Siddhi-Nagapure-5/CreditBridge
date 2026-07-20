@@ -6,19 +6,95 @@
 ## 🚀 The Vision
 In today's economy, millions of creditworthy individuals are "credit invisible"—they lack the traditional history (CIBIL/FICO) required for institutional loans. **CreditBridge** solves this by leveraging **Behavioral AI Analytics** to assess creditworthiness based on alternative data points like income stability, spending patterns, and savings ratios.
 
-## 🛠️ System Architecture
+---
+
+## 📐 System Architecture
+
+Our system is structured into three main micro-components: the User Interface, the Core Backend, and the Machine Learning Intelligence Engine.
 
 ```mermaid
 graph TD
-    User((User / Admin)) -->|React 19 Frontend| FE[Vite App]
-    FE -->|REST API / JWT| BE[Spring Boot Backend]
-    BE -->|PostgreSQL| DB[(PostgreSQL)]
-    BE -->|Scoring Request| ML[FastAPI ML Engine]
-    ML -->|Behavioral Analysis| XGB[XGBoost Model]
-    ML -->|Explainability| SHAP[SHAP Explainer]
-    BE -->|Email Alerts| SMTP[SMTP/Brevo]
-    BE -->|AI Insights| GEMINI[Gemini AI]
+    subgraph Frontend["Frontend (React 19 & Vite)"]
+        User((User / Admin)) -->|Interacts| UI[UI Components]
+        UI -->|State Management| Context[React Context]
+        Context -->|Axios| API_Calls[API Client]
+    end
+
+    subgraph Backend["Core Backend (Spring Boot 3)"]
+        API_Calls -->|REST API / JWT| Auth[Security & JWT Filter]
+        Auth --> Controllers[REST Controllers]
+        Controllers --> Services[Business Logic Services]
+        Services --> Repos[JPA Repositories]
+    end
+
+    subgraph Database["Data Layer"]
+        Repos -->|Hibernate/JPA| DB[(PostgreSQL)]
+    end
+
+    subgraph MLEngine["ML Intelligence (FastAPI)"]
+        Services -->|Scoring Request| FastAPI[Inference API]
+        FastAPI -->|Behavioral Analysis| XGB[XGBoost Model]
+        FastAPI -->|Explainability| SHAP[SHAP Explainer]
+    end
+
+    subgraph External["External Services"]
+        Services -->|Email Alerts| SMTP[SMTP/Brevo]
+        Services -->|AI Insights| GEMINI[Google Gemini AI]
+    end
 ```
+
+---
+
+## 🔄 Core User Flow
+
+Here is the flow of how a user applies for a loan and receives a behavioral credit score.
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant F as Frontend (React)
+    participant B as Backend (Spring Boot)
+    participant M as ML Engine (FastAPI)
+    participant D as Database (Postgres)
+
+    U->>F: Submit Loan Application & Financial Data
+    F->>B: POST /api/loans/apply
+    B->>D: Save Initial Application State
+    B->>M: POST /predict (Behavioral Data)
+    M-->>M: Run XGBoost Model
+    M-->>M: Generate SHAP Explanations
+    M-->>B: Return Credit Score & Confidence Metrics
+    B->>D: Update Application Status
+    B-->>F: Return Success & Score Results
+    F-->>U: Display "Financial DNA" & Loan Status
+```
+
+---
+
+## 📁 Project Structure
+
+A clean, modular monorepo structure separating the three primary domains:
+
+```text
+CreditBridge/
+├── backend/                  # Spring Boot Java Application
+│   ├── src/main/java/...     # Controllers, Models, Services, Security
+│   ├── database_setup.sql    # Initial DB schema and roles
+│   └── pom.xml               # Maven dependencies
+├── frontend/                 # React 19 + Vite Application
+│   ├── src/                  # React components, pages, context, styles
+│   ├── server/               # Express proxy/utility server (optional)
+│   └── package.json          # Node dependencies
+└── ml/                       # Python FastAPI Machine Learning Engine
+    ├── data/                 # Training datasets (Synthetic & Real)
+    ├── models/               # Model trainers and serialized .pkl files
+    ├── processing/           # Data cleaning and feature engineering
+    ├── explainability/       # SHAP integration
+    ├── api.py                # FastAPI inference server
+    └── main.py               # Model training pipeline
+```
+
+---
 
 ## ✨ Key Features
 
@@ -43,14 +119,18 @@ graph TD
 - **RBAC**: Fine-grained Role-Based Access Control for bank-grade security.
 - **AI Integration**: Leverages Google Gemini for deep financial insights and automated reports.
 
+---
+
 ## 💻 Tech Stack
 
-| Component | technologies |
+| Component | Technologies |
 | :--- | :--- |
 | **Frontend** | React 19, Vite, Tailwind CSS 4, Framer Motion, GSAP, Recharts |
 | **Backend** | Spring Boot, Java, PostgreSQL, Spring Security (JWT), Hibernate |
 | **ML Engine** | FastAPI, Python, XGBoost, SHAP, Scikit-learn, Pandas |
 | **Third-Party** | Google Gemini API, Brevo (SMTP), Lucide Icons |
+
+---
 
 ## ⚙️ Requirements
 
@@ -79,10 +159,9 @@ CREATE DATABASE credit_scoring;
 ```
 
 ### 2. Environment Variables Configuration
-For security, credentials are not committed. Set the corresponding environment variables for the backend and frontend.
+For security, credentials are not committed. Set the corresponding environment variables.
 
-**Backend configurations**:
-Export the following environment variables (or supply them in IntelliJ/Eclipse).
+**Backend configurations** (Export or set in your IDE):
 ```bash
 export SMTP_PASSWORD="your_brevo_smtp_password"
 export GEMINI_API_KEY="your_gemini_api_key"
@@ -117,7 +196,7 @@ python api.py
 Ensure your database `credit_scoring` is up and ML FastAPI is running on `port 8000`.
 ```bash
 cd backend
-# Ensure variables are exported in this shell instance
+# Run the Spring Boot application
 ./mvnw spring-boot:run
 ```
 *The Spring application will boot up at default port `8080`.*
@@ -129,7 +208,9 @@ cd frontend
 npm install
 npm run dev
 ```
-*The app will start usually on `localhost:5173`. Default Super Admin login available inside the SQL setup script.*
+*The app will start on `localhost:5173`.*
+
+---
 
 ## 📈 Future Roadmap
 - [ ] **Blockchain Integration**: Decentralized identity verification for faster KYC.
@@ -137,4 +218,5 @@ npm run dev
 - [ ] **Enhanced Geo-Scoring**: Incorporating regional economic stability metrics into the ML model.
 
 ---
+
 Developed with ❤️ for **Pragyantra Hackathon 2026**
