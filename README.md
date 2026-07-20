@@ -219,4 +219,4 @@ npm run dev
 
 ---
 
-Developed with ❤️ for **Pragyantra Hackathon 2026**
+**Pragyantra Hackathon 2026**
